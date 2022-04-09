@@ -2,163 +2,125 @@
 
 
 
-
-
-
+var date = moment().format('MM/DD/YYYY');
+var apiKey = '1371c97168ddd23b4146579d8cbe687b'
+var weatherUrlBase = 'https://api.openweathermap.org/data/2.5/weather'
+var apiURL = weatherUrlBase + '?q=' + cityName + '&units=imperial&appid=' + apiKey;
+var cityName
 
 //SET GLOBAL VARIABLES ABOVE
 //---------------------------------------------------------------------------------------------------------------
 //DEFINE UTILITY FUNCTIONS BELOW
 
 
-
-// handle displaying the time
-function displayTime() {
-    var rightNow = moment().format('MMM DD, YYYY [at] hh:mm:ss a');
-    return rightNow;
+function getAPI(URL) {
+    fetch(URL, {
+        method: 'GET',
+        credentials: 'same-origin',
+        redirect: 'follow',
+    })
+        .then(function (response) {
+            return response.json();
+            console.log(response);
+        })
+        .then(function (data) {
+            console.log(data);
+        });
 }
 
-
-//SET A TIMER
-function setTimer(timeInSecs, timerDomElement) {
-    timerInterval = setInterval(function () {
-        timeInSecs--;
-        minutesLeft = Math.floor(timeInSecs / 60);
-        secondsRemainder = (timeInSecs - (minutesLeft * 60));
-        timerDomElement = " -- " + minutesLeft + " mins " + secondsRemainder + " seconds left!";
-        if (timeInSecs === 0) {
-            clearInterval(timerInterval);
-            timerDomElement = "Out of time...";
-        }
-        return timeInSecs;
-    }, 1000);
-}
-
-//Text array assigned to DOM element array within container
-function textArrToExistingDOMArr(container, arrDomElements, arrOfText) {
-    const forceArray = (v) => [].concat(v).map(name => name);
-    let arrDomElements = forceArray(arrDomElements);
-    let arrOfText = forceArray(arrOfText);
-    if (arrDomElements.length > arrOfText.length) {
-        for (var i = 0; i < arrOfText.length; i++) {
-            container.arrDomElements.at(i).textContent = arrOfText.at(i);
-        }
-    } else {
-        for (var i = 0; i < arrDomElements.length; i++) {
-            container.arrDomElements.at(i).textContent = arrOfText.at(i);
-        }
-    }
-    return console.log('Text from array added to ' + i + ' DOM elements');
-}
-
-
-//Get storage
-function retrieveStoredArray(storedDataName) {
-    const forceArray = (v) => [].concat(v).map(name => name);
-    var storedArray = forceArray(JSON.parse(localStorage.getItem(storedDataName)));
-    return storedArray;
-}
-
-
-//Set storage
-function storeArray(assignName, data) {
-    const forceArray = (v) => [].concat(v).map(name => name);
-    var sendToStorage = JSON.stringify(forceArray(data));
-    localStorage.setItem(assignName, sendToStorage);
-    return console.log('Stored ' + assignName + ' as: ' + sendToStorage)
-}
-
-
-//Update storage
 function updateStoredArray(storedDataName, addData) {
     const forceArray = (v) => [].concat(v).map(name => name);
-    var storedArray = forceArray(JSON.parse(localStorage.getItem(storedDataName)));
-    var combinedArray = storedArray.push(addData);
-    var backToStorage = JSON.stringify(forceArray(combinedArray));
+    var storedArray = JSON.parse(localStorage.getItem(storedDataName));
+    if (typeof storedArray === 'string' && storedArray.length > 0) {
+        storedArray = forceArray(JSON.parse(localStorage.getItem(storedDataName)));
+        var combinedArray = storedArray.push(addData);
+        var backToStorage = JSON.stringify(combinedArray);
+    } else if (typeof storedarray === 'object') {
+        var combinedArray = storedArray.push(addData);
+        var backToStorage = JSON.stringify(combinedArray);
+    } else {
+        var backToStorage = JSON.stringify(forceArray(addData));
+    }
     localStorage.setItem(storedDataName, backToStorage);
     return console.log('Stored ' + storedDataName + ' as: ' + backToStorage)
 }
 
 
 
-//Create DOM elements from array; Append them to a container; Add text to to them from an array
-function createAppendAndTextByArray(containerToFill, createdTagName, textArrToAppend) {
-    if (textArrToAppend.length > 0) {
-        let containerToFill;
-        let createdTagName;
-        let textArrToAppend;
-        for (var i = 0; i < textArrToAppend.length; i++) {
-            createdTagName = document.createElement("li");
-            createdTagName.textContent = textArrToAppend.at(i);
-            container.appendChild(textArrToAppend.at(i));
-        }
-        return console.log('Within ' + container + ' ' + textArrToAppend.length + ' ' + createdTagName + '\'s of text were created');
-    }
-    return console.log('Your array was empty');
-}
-
-
-//Randomw selection within an array
-function getRandomArrIndex(arr) {
-    var i = Math.floor(Math.random() * arr.length);
-    return i;
-}
-
-
-//Sort an array of numbers
-function sortNumArray(numArray) {
-    var swap = true;
-    var save1st;
-    var compare1;
-    var compare2;
-    for (var j = 0; j < numArray.length; j++) {
-        for (var i = 0; i < numArray.length; i++) {
-            swap = false;
-            compare1 = numArray[i];
-            compare2 = numArray[(i + 1)];
-            if (compare1 > compare2) {
-                save1st = compare1;
-                numArray[i] = compare2;
-                numArray[i + 1] = save1st;
-                swap = true;
-            }
-        }
-    }
-    return numArray;
-}
-
-
-
 //DEFINE UTILITY FUNCTIONS ABOVE
 //------------------------------------------------------------------------------------------------------------------
-//LISTEN AND TAKE ACTION BELOW
+//DEFINE THE PRIMARY FUNCTION BELOW
 
 
 
-function doingTheWorkHere() {
-    //TAKE INITIAL ACTION
-    //SET NEXT ITERATIVE CONDITIONS
-    //TEST CONDITION #1------------------------------------------------------
-    if (true) {
-        //TAKE ACTION
-        //SET NEXT ITERATIVE CONDITIONS
-        //TESTCONDITION  #2--------------------------------------------------
-    } else if (true) {
-        //TAKE ACTION
-        //SET NEXT ITERATIVE CONDITIONS
-        //TEST CONDITION #3--------------------------------------------------
-    } else if (true) {
-        //TAKE ACTION
-        //SET NEXT ITERATIVE CONDITIONS
-        //TEST CONDITION #4--------------------------------------------------
-    } else if (true) {
-        //TAKE ACTION
-        //SET NEXT ITERATIVE CONDITIONS
-        //TEST CONDITION #5--------------------------------------------------
-    } else if (true) {
-        //TAKE ACTION
+function constructPage() {
+    //create overall container
+    $('header').addClass('text-center bg-dark text-light');
+    var container = $('.container').addClass('w-100 d-flex');
+    //left container
+    var leftContainerCol = $('<div>').addClass('parameters col bg-light').attr('id', 'left-cont');
+    //right container
+    var rightContainerCol = $('<div>').addClass('results col-9').attr('id', 'right-cont');
+    //top left container
+    var citySearchCont = $('<div>').addClass('row').attr('id', 'search-cont');
+    var citySearchHeader = $('<h2>').addClass('row w-100 m-1').attr('id', 'search-header').text('Search for a City:');
+    var citySearchForm = $('<div>').addClass('row w-100 m-1').attr('id', 'search-form');
+    var citySearchInput = $('<input>').addClass('col border border-secondary rounded').attr('id', 'search-input').val('San Diego');
+    var citySearchButton = $('<button>').addClass('col-2 m-1 p-0 bg-primary border border-secondary rounded').attr('id', 'search-button');
+    var citySearchIcon = $('<svg>').addClass('bi bi-search').attr({ 'id': 'icon', 'xmlns': 'http://www.w3.org/2000/svg', 'width': '8', 'height': '8', 'fill': 'currentColor', 'viewBox': '0 0 8 8' });
+    var citySearchIconPath = $('<path>').attr('d', 'M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z');
+    citySearchButton.append(citySearchIcon.append(citySearchIconPath));
+    //bottom left container
+    var cities;
+    var listOfCitiesContainer = $('<div>').addClass('row border border-secondary rounded city-info').attr('id', 'city-info-cont');
+    for (let i = 0; i < 8; i++) {
+        cities = $('<div>').addClass('row w-100 p-3 border border-secondary rounded').attr('id', 'city' + i).text('test');
+        listOfCitiesContainer.append(cities);
     }
+    //top right container
+    var selectedCityContainer = $('<div>').addClass('row w-100 border border-secondary rounded city-info').attr('id', 'city-info-container');
+    //fill the selected city section
+    var cityInfo;
+    var cityInfoIDs = ['name-data', 'temp', 'humid', 'wind', 'uv'];
+    for (let i = 0; i < cityInfoIDs.length; i++) {
+        cityInfo = $('<div>').addClass('row w-100 m-1').attr('id', 'city-' + cityInfoIDs[i]);
+        selectedCityContainer.append(cityInfo);
+    }
+    //bottom right container
+    var forecastContainer = $('<div>').addClass('row').attr('id', 'forecast-container');
+    //fill the forecast container
+    var forecastTop = $('<div>').addClass('row w-100 m-1 p-1 forecast-title-container');
+    var forecastTopTitle = $('<h2>').addClass('forecast-title').text('5-Day Forecast');
+    //build out the forecast divs
+    var forecastBot = $('<div>').addClass('row w-100 m-1 p-1 d-flex forecast-blocks-container');
+    var forecastIDs = ['date', 'icon', 'temp', 'humid'];
+    var dayContainer;
+    for (let i = 0; i < 5; i++) {
+        dayContainer = $('<div>').addClass('col bg-primary m-2 rounded forecast-blocks').attr('id', 'day-cont' + i);
+        for (let j = 0; j < forecastIDs.length; j++) {
+            var info = $('<p>').addClass('row w-100 m-1 text-light forecast-dates').attr('id', forecastIDs[j]);
+            dayContainer.append(info);
+        }
+        forecastBot.append(dayContainer);
+    }
+    container.append(
+        leftContainerCol.append(
+            citySearchCont.append(
+                citySearchHeader, citySearchForm.append(
+                    citySearchInput, citySearchButton.append(
+                        citySearchIcon.append(
+                            citySearchIconPath)))),
+            listOfCitiesContainer),
+        rightContainerCol.append(
+            selectedCityContainer.append(
+                $('<br>')),
+            forecastContainer.append(
+                forecastTop.append(
+                    forecastTopTitle), forecastBot)));
+
+
 }
+
 
 
 //DEFINE THE PRIMARY FUNCTION ABOVE
@@ -167,6 +129,25 @@ function doingTheWorkHere() {
 
 
 
+constructPage();
+
+
+document.querySelector('input').addEventListener('submit', function (event) {
+    var inputEl = $(event.target);
+    var cityName = inputEl.val();
+    var apiURL = weatherUrlBase + '?q=' + cityName + '&units=imperial&appid=' + apiKey;
+    var weatherInfo = getAPI(apiURL);
+    console.log(weatherInfo);
+
+    var parsedCityDate = cityName + ' (' + date + ') ';
+    var parsedTempNow;
+    var parsedHumidNow;
+    var parsedWindNow;
+    var parsedUVNow;
+
+
+    //updateStoredArray(CIT1, targetedText);
+});
 
 
 
@@ -176,17 +157,6 @@ function doingTheWorkHere() {
 //LISTEN AND TAKE ACTION ABOVE
 //------------------------------------------------------------------------------------------------------------------
 //LISTEN AND TAKE ACTION BELOW
-
-
-
-
-
-
-
-
-
-
-
 
 
 
