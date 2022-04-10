@@ -1,31 +1,135 @@
 
+moment.unix('1649617200').format('M/DD/YYYY');
 
-
-
-var date = moment().format('MM/DD/YYYY');
-var apiKey = '1371c97168ddd23b4146579d8cbe687b'
-var weatherUrlBase = 'https://api.openweathermap.org/data/2.5/weather'
-var apiURL = weatherUrlBase + '?q=' + cityName + '&units=imperial&appid=' + apiKey;
+var date = moment().format('M/DD/YYYY');
+var apiKey = '1371c97168ddd23b4146579d8cbe687b';
+var weatherUrlBase;
+var apiURL;
 var forecastDays = 5;
-var cityName
+var cityName;
+
+var weatherInfo;
+var parsedIcon;
+var parsedCityDate;
+var parsedLat;
+var parsedLon;
+var parsedCountry;
+var parsedTempNow;
+var parsedHumidNow;
+var parsedWindNow;
+
+var forecastInfo;
+
+
+var cityNameForURL = encodeURIComponent('San Diego'.trim());
+var weatherAPIURL = ('https://api.openweathermap.org/data/2.5/weather?q=' + cityNameForURL + '&units=imperial&appid=' + apiKey);
+
+
 
 //SET GLOBAL VARIABLES ABOVE
 //---------------------------------------------------------------------------------------------------------------
 //DEFINE UTILITY FUNCTIONS BELOW
 
 
-function getAPI(URL) {
+function getWeather(URL) {
     fetch(URL, {
         method: 'GET',
         credentials: 'same-origin',
         redirect: 'follow',
     })
         .then(function (response) {
-            return response.json();
             console.log(response);
+            return response.json();
         })
         .then(function (data) {
             console.log(data);
+
+            weatherInfo = data;
+            parsedIcon = weatherInfo.weather['0'].icon;
+            parsedCityDate = cityName + ' (' + date + ') ';
+            parsedLat = weatherInfo.coord.lat;
+            parsedLon = weatherInfo.coord.lon;
+            parsedCountry = weatherInfo.sys.country;
+            parsedTempNow = weatherInfo.main.temp;
+            parsedHumidNow = weatherInfo.main.humidity;
+            parsedWindNow = weatherInfo.wind.speed + ' MPH';
+
+            forecastAPIURL = ('https://api.openweathermap.org/data/2.5/onecall?lat=' + parsedLat + '&lon=' + parsedLon + '&appid=' + apiKey);
+            getForecast(forecastAPIURL);
+
+        });
+}
+
+function getForecast(URL) {
+    fetch(URL, {
+        method: 'GET',
+        credentials: 'same-origin',
+        redirect: 'follow',
+    })
+        .then(function (response) {
+            console.log(response);
+            return response.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            forecastInfo = data;
+            var parsedUVNow;
+
+
+    $('#city-name-date').text($('#search-input').val() + ' ' + date + ' ' + parsedIcon);
+    $('#city-temp').text('Temperature: ' + parsedTempNow);
+    $('#city-humid').text('Humidity: ' + parsedHumidNow);
+    $('#city-wind').text('Wind Speed: ' + );
+    $('#city-uv').text();
+
+
+            $('#date0').text();
+            $('#icon0').text();
+            $('#temp0').text();
+            $('#humid0').text();
+
+
+            $('#date1').text();
+            $('#icon1').text();
+            $('#temp1').text();
+            $('#humid1').text();
+
+
+            $('#date2').text();
+            $('#icon2').text();
+            $('#temp2').text();
+            $('#humid2').text();
+
+
+            $('#date3').text();
+            $('#icon3').text();
+            $('#temp3').text();
+            $('#humid3').text();
+
+
+            $('#date4').text();
+            $('#icon4').text();
+            $('#temp4').text();
+            $('#humid4').text();
+
+
+
+    $('#search-input').val('');
+    $('#city1').text('test');
+    $('#city2').text('test');
+    $('#city3').text('test');
+    $('#city4').text('test');
+    $('#city5').text('test');
+    $('#city6').text('test');
+    $('#city7').text('test');
+    $('#city8').text('test');
+
+
+
+
+
+
+
         });
 }
 
@@ -36,7 +140,7 @@ function updateStoredArray(storedDataName, addData) {
         storedArray = forceArray(JSON.parse(localStorage.getItem(storedDataName)));
         var combinedArray = storedArray.push(addData);
         var backToStorage = JSON.stringify(combinedArray);
-    } else if (typeof storedarray === 'object') {
+    } else if (typeof storedArray === 'object') {
         var combinedArray = storedArray.push(addData);
         var backToStorage = JSON.stringify(combinedArray);
     } else {
@@ -65,7 +169,7 @@ function constructPage() {
     //top left container
     var citySearchCont = $('<div>').addClass('row').attr('id', 'search-cont');
     var citySearchHeader = $('<h2>').addClass('row w-100 m-1').attr('id', 'search-header').text('Search for a City:');
-    var citySearchForm = $('<div>').addClass('row w-100 m-1').attr('id', 'search-form');
+    var cityTextBtnCont = $('<div>').addClass('row w-100 m-1').attr('id', 'search-text-btn-cont');
     var citySearchInput = $('<input>').addClass('col border border-secondary rounded').attr('id', 'search-input').val('San Diego');
     var citySearchButton = $('<button>').addClass('col-2 m-1 p-0 bg-primary border border-secondary rounded').attr('id', 'search-button');
     var citySearchIcon = $('<svg>').addClass('bi bi-search').attr({ 'id': 'icon', 'xmlns': 'http://www.w3.org/2000/svg', 'width': '8', 'height': '8', 'fill': 'currentColor', 'viewBox': '0 0 8 8' });
@@ -82,7 +186,7 @@ function constructPage() {
     var selectedCityContainer = $('<div>').addClass('row w-100 border border-secondary rounded city-info').attr('id', 'city-info-container');
     //fill the selected city section
     var cityInfo;
-    var cityInfoIDs = ['name-data', 'temp', 'humid', 'wind', 'uv'];
+    var cityInfoIDs = ['name-date', 'temp', 'humid', 'wind', 'uv'];
     for (let i = 0; i < cityInfoIDs.length; i++) {
         cityInfo = $('<div>').addClass('row w-100 m-1').attr('id', 'city-' + cityInfoIDs[i]);
         selectedCityContainer.append(cityInfo);
@@ -99,17 +203,17 @@ function constructPage() {
     for (let i = 0; i < forecastDays; i++) {
         dayContainer = $('<div>').addClass('col bg-primary m-2 rounded forecast-blocks').attr('id', 'day-cont' + i);
         for (let j = 0; j < forecastIDs.length; j++) {
-            var info = $('<p>').addClass('row w-100 m-1 text-light forecast-dates').attr('id', forecastIDs[j]);
+            var info = $('<p>').addClass('row w-100 m-1 text-light forecast-dates').attr('id', (forecastIDs[j] + j));
             dayContainer.append(info);
         }
         forecastBot.append(dayContainer);
     }
 
-    //append relationships between objects
+    //append remaining relationships between objects
     container.append(
         leftContainerCol.append(
             citySearchCont.append(
-                citySearchHeader, citySearchForm.append(
+                citySearchHeader, cityTextBtnCont.append(
                     citySearchInput, citySearchButton.append(
                         citySearchIcon.append(
                             citySearchIconPath)))),
@@ -134,27 +238,11 @@ function constructPage() {
 
 constructPage();
 
-
 document.querySelector('button').addEventListener('click', function (event) {
     var inputEl = $(event.target);
-    var cityName = inputEl.parent().children(0).val();
-    var apiURL = weatherUrlBase + '?q=' + cityName + '&units=imperial&appid=' + apiKey;
-    var weatherInfo = getAPI(apiURL);
-    console.log(weatherInfo);
+    var cityNameForURL = encodeURIComponent(inputEl.parent().children(0).val().trim());
 
-    var parsedCityDate = cityName + ' (' + date + ') ' + weatherInfo.weather[0].icon;
-    var parsedLat = weatherInfor.coord.lat;
-    var parsedLon = weatherInfo.coord.lon;
-    var parsedCountry = weatherInfo.sys.country;
-    var parsedTempNow = weatherInfo.main.temp;
-    var parsedHumidNow = weatherInfo.main.humidity;
-    var parsedWindNow = weatherInfo.wind.speed + 'MPH'
-    var parsedUVNow;
-
-    var forecastInfo = getAPI('api.openweathermap.org/data/2.5/forecast/daily?lat=' + parsedLat + '&lon=' + parsedLon + '&cnt=' + forecastDays + '&appid=' + apiKey);
-    console.log(forecastInfo);
-
-
+    getWeather(weatherAPIURL);
 
     //updateStoredArray(CIT1, targetedText);
 });
