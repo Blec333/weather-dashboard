@@ -6,6 +6,7 @@ var date = moment().format('MM/DD/YYYY');
 var apiKey = '1371c97168ddd23b4146579d8cbe687b'
 var weatherUrlBase = 'https://api.openweathermap.org/data/2.5/weather'
 var apiURL = weatherUrlBase + '?q=' + cityName + '&units=imperial&appid=' + apiKey;
+var forecastDays = 5;
 var cityName
 
 //SET GLOBAL VARIABLES ABOVE
@@ -95,7 +96,7 @@ function constructPage() {
     var forecastBot = $('<div>').addClass('row w-100 m-1 p-1 d-flex forecast-blocks-container');
     var forecastIDs = ['date', 'icon', 'temp', 'humid'];
     var dayContainer;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < forecastDays; i++) {
         dayContainer = $('<div>').addClass('col bg-primary m-2 rounded forecast-blocks').attr('id', 'day-cont' + i);
         for (let j = 0; j < forecastIDs.length; j++) {
             var info = $('<p>').addClass('row w-100 m-1 text-light forecast-dates').attr('id', forecastIDs[j]);
@@ -103,6 +104,8 @@ function constructPage() {
         }
         forecastBot.append(dayContainer);
     }
+
+    //append relationships between objects
     container.append(
         leftContainerCol.append(
             citySearchCont.append(
@@ -132,18 +135,25 @@ function constructPage() {
 constructPage();
 
 
-document.querySelector('input').addEventListener('submit', function (event) {
+document.querySelector('button').addEventListener('click', function (event) {
     var inputEl = $(event.target);
-    var cityName = inputEl.val();
+    var cityName = inputEl.parent().children(0).val();
     var apiURL = weatherUrlBase + '?q=' + cityName + '&units=imperial&appid=' + apiKey;
     var weatherInfo = getAPI(apiURL);
     console.log(weatherInfo);
 
-    var parsedCityDate = cityName + ' (' + date + ') ';
-    var parsedTempNow;
-    var parsedHumidNow;
-    var parsedWindNow;
+    var parsedCityDate = cityName + ' (' + date + ') ' + weatherInfo.weather[0].icon;
+    var parsedLat = weatherInfor.coord.lat;
+    var parsedLon = weatherInfo.coord.lon;
+    var parsedCountry = weatherInfo.sys.country;
+    var parsedTempNow = weatherInfo.main.temp;
+    var parsedHumidNow = weatherInfo.main.humidity;
+    var parsedWindNow = weatherInfo.wind.speed + 'MPH'
     var parsedUVNow;
+
+    var forecastInfo = getAPI('api.openweathermap.org/data/2.5/forecast/daily?lat=' + parsedLat + '&lon=' + parsedLon + '&cnt=' + forecastDays + '&appid=' + apiKey);
+    console.log(forecastInfo);
+
 
 
     //updateStoredArray(CIT1, targetedText);
@@ -153,10 +163,9 @@ document.querySelector('input').addEventListener('submit', function (event) {
 
 
 
-
 //LISTEN AND TAKE ACTION ABOVE
 //------------------------------------------------------------------------------------------------------------------
-//LISTEN AND TAKE ACTION BELOW
+
 
 
 
