@@ -1,5 +1,22 @@
 
 
 * {
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
+}
+
+
+button {
+    border: 5px solid cyan;
+}
+
+#uvi-cont {
+    background-color: red;
+    max-width: 100px;
+    color: white;
+    font-weight:bolder;
+    border-radius: 5px;
+    border: 1px solid black;
+    margin-left: 10px;
+    font-size: 14px;
+    padding: 2px;
 }
