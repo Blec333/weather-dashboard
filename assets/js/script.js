@@ -7,18 +7,6 @@ var weatherUrlBase;
 var apiURL;
 var forecastDays = 5;
 var cityName;
-
-var weatherInfo;
-var parsedIcon;
-var parsedCityDate;
-var parsedLat;
-var parsedLon;
-var parsedCountry;
-var parsedTempNow;
-var parsedHumidNow;
-var parsedWindNow;
-
-var forecastInfo;
 var cityNameForURL;
 var weatherAPIURL;
 
@@ -42,6 +30,20 @@ function storeArray(assignName, data) {
     var sendToStorage = JSON.stringify(forceArray(data));
     localStorage.setItem(assignName, sendToStorage);
     return console.log('Stored ' + assignName + ' as: ' + sendToStorage)
+}
+
+function takeActionOnEvent() {
+    cityName = $('#search-input').val();
+    cityNameForURL = encodeURIComponent($('#search-input').val().trim());
+    weatherAPIURL = ('https://api.openweathermap.org/data/2.5/weather?q=' + cityNameForURL + '&units=imperial&appid=' + apiKey);
+    getWeather(weatherAPIURL);
+    for (var i = 8; i > 1; i--) {
+        storeArray(('city-history-' + i), $('#city' + (i - 1)).text());
+    }
+    storeArray('city-history-0', $('#search-input').val());
+    for (var i = 0; i < 8; i++) {
+        $(('#city' + i)).text(retrieveStoredArray(('city-history-' + i)));
+    }
 }
 
 
@@ -109,20 +111,19 @@ function constructPage() {
             listOfCitiesContainer),
         rightContainerCol.append(
             selectedCityContainer.append(
-                $('<br>'),$('<br>'),$('<br>'),$('<br>')),
+                $('<br>'), $('<br>'), $('<br>'), $('<br>')),
             forecastContainer.append(
                 forecastTop.append(
                     forecastTopTitle), forecastBot)));
-
-//Handle adding the icons
-                    $('#search-button').append($('<img id="search-button-icon" src="https://vectorified.com/images/white-search-icon-png-33.png" height="16" width="16"/>'));
-                    $('#city-name-date::after').append($('<img id="city-name-date-icon src="./assets/images/image1.jpg" height="32" width="32"/>'));
-                    $('#icon0').append($('<img id="icon-img0" src="./assets/images/image1.jpg" height="32" width="32"/>'));
-                    $('#icon1').append($('<img id="icon-img1" src="./assets/images/image1.jpg" height="32" width="32"/>'));
-                    $('#icon2').append($('<img id="icon-img2" src="./assets/images/image1.jpg" height="32" width="32"/>'));
-                    $('#icon3').append($('<img id="icon-img3" src="./assets/images/image1.jpg" height="32" width="32"/>'));
-                    $('#icon4').append($('<img id="icon-img4" src="./assets/images/image1.jpg" height="32" width="32"/>'));
-//Load local storage of past cities
+    //Handle adding the icons
+    $('#search-button').append($('<img id="search-button-icon" src="https://vectorified.com/images/white-search-icon-png-33.png" height="16" width="16"/>'));
+    $('#city-name-date::after').append($('<img id="city-name-date-icon src="./assets/images/image1.jpg" height="32" width="32"/>'));
+    $('#icon0').append($('<img id="icon-img0" src="./assets/images/image1.jpg" height="32" width="32"/>'));
+    $('#icon1').append($('<img id="icon-img1" src="./assets/images/image1.jpg" height="32" width="32"/>'));
+    $('#icon2').append($('<img id="icon-img2" src="./assets/images/image1.jpg" height="32" width="32"/>'));
+    $('#icon3').append($('<img id="icon-img3" src="./assets/images/image1.jpg" height="32" width="32"/>'));
+    $('#icon4').append($('<img id="icon-img4" src="./assets/images/image1.jpg" height="32" width="32"/>'));
+    //Load local storage of past cities
     for (var i = 0; i < 8; i++) {
         $('#city' + i).text(retrieveStoredArray('city-history-' + i));
     }
@@ -132,6 +133,7 @@ function constructPage() {
     weatherAPIURL = ('https://api.openweathermap.org/data/2.5/weather?q=' + cityNameForURL + '&units=imperial&appid=' + apiKey);
     getWeather(weatherAPIURL);
 }
+
 
 function getWeather(URL) {
     fetch(URL, {
@@ -150,16 +152,18 @@ function getWeather(URL) {
             parsedIcon = 'http://openweathermap.org/img/wn/' + data.weather['0'].icon + '@2x.png';
 
             $('#city-name-date').text(cityName + ' (' + date + ') ');
-            // $('#city-name-date-icon').attr('src', ('http://openweathermap.org/img/wn/' + data.weather['0'].icon + '@2x.png'));
             $('#city-temp').text('Temperature: ' + data.main.temp);
             $('#city-humid').text('Humidity: ' + data.main.humidity);
             $('#city-wind').text('Wind Speed: ' + data.wind.speed + ' MPH');
 
             forecastAPIURL = ('https://api.openweathermap.org/data/2.5/onecall?lat=' + data.coord.lat + '&lon=' + data.coord.lon + '&units=imperial' + '&appid=' + apiKey);
             getForecast(forecastAPIURL);
+        })
+        .catch(function (error) {
+            console.log(error);
+            alert('\n\nError:\n\nPlease check your spelling.\n\nIf this problem persists consult the console log for more information.')
         });
 }
-
 function getForecast(URL) {
     fetch(URL, {
         method: 'GET',
@@ -203,89 +207,18 @@ function getForecast(URL) {
 //------------------------------------------------------------------------------------------------------------------
 //LISTEN AND TAKE ACTION BELOW
 
-
+//upon loading construct page
 constructPage();
 
+//now listen
 document.querySelector('button').addEventListener('click', function (event) {
-    var inputEl = $(event.target);
-    cityName = $('#search-input').val();
-    cityNameForURL = encodeURIComponent(inputEl.parent().children(0).val().trim());
-    weatherAPIURL = ('https://api.openweathermap.org/data/2.5/weather?q=' + cityNameForURL + '&units=imperial&appid=' + apiKey);
-    getWeather(weatherAPIURL);
-
-    for (var i = 8; i > 0; i--) {
-        storeArray(('city-history-' + i), $('#city' + (i - 1)).text());
-    }
-    storeArray('city-history-0', $('#search-input').val());
-
-    for (var i = 0; i < 8; i++) {
-        $(('#city' + i)).text(retrieveStoredArray(('city-history-' + i)));
-    }
-
+    var inputEl = event.target;
+    takeActionOnEvent();
 });
 
-document.addEventListener('keyup', function (event) {
-    var inputEl = $(event.key);
-    console.log(inputEl);
+document.querySelector('#search-input').addEventListener('keyup', function (event) {
+    var inputEl = event.key;
     if (inputEl === "Enter") {
-    cityName = $('#search-input').val();
-    cityNameForURL = encodeURIComponent($('#search-input').val().trim());
-    weatherAPIURL = ('https://api.openweathermap.org/data/2.5/weather?q=' + cityNameForURL + '&units=imperial&appid=' + apiKey);
-    getWeather(weatherAPIURL);
-    for (var i = 8; i > 1; i--) {
-        storeArray(('city-history-' + i), $('#city' + (i - 1)).text());
-    }
-    storeArray('city-history-0', $('#search-input').val());
-    for (var i = 0; i < 8; i++) {
-        $(('#city' + i)).text(retrieveStoredArray(('city-history-' + i)));
-    }
-
+        takeActionOnEvent();
     }
 });
-
-
-//LISTEN AND TAKE ACTION ABOVE
-//------------------------------------------------------------------------------------------------------------------
-//NOTES BELOW HERE
-
-
-// Javascript
-//     SELECT BY ID
-//         document.querySelector('#someIDHere');
-//     SELECT BY CLASS
-//         document.querySelector('.someClassHere');
-//     SELECT CHILDREN OF
-//         document.querySelector('someSelectorHere).children[0].children[0];
-//     CREATE DOM ELEMENT
-//         document.createElement("someTagHere");
-//     ASSIGN A CONTAINER ELEMENT
-//         document.querySelector("someSelectorHere");
-//     ADD ATTRIBUTE (CLASS)
-//         document.querySelector("someSelectorHere").setAttribute('.someClassHere');
-//     ADD TEXT
-//         document.querySelector("someSelectorHere").setAttribute('.someClassHere').textContent;
-//     RANDOM CONSOLIDATED EXAMPLE
-//         document.querySelector("someSelectorHere").setAttribute('.someClassHere').textContent = 'some text';
-//     EVENT LISTENERS
-//         document.querySelector("someSelectorHere").addEventListener('click', function () {
-//             function goes here
-//         })
-
-
-// jQuery
-//     SELECT BY ID
-//         $('#someIDhere');
-//     SELECT BY CLASS
-//         $('.someClassHere');
-//     SELECT CHILDREN OF
-//         $('.someClassHere').child(0).child(0);
-//     CREATE DOM ELEMENT
-//         $('<someTagHere>');
-//     ASSIGN A CONTAINER ELEMENT
-//         $('someSelectorHere');
-//     ADD ATTRIBUTE (CLASS)
-//         $('someSelectorHere').addClass('someClassAssignmentHere');
-//     ADD TEXT
-//         $('someSelectorHere').addClass('someClassAssignmentHere').text('someTextHere');
-//     RANDOM CONSOLIDATED EXAMPLE
-//         $('<td>').addClass('p-2').text(type);
