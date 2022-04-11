@@ -2,6 +2,7 @@
 
 * {
     /* border: 1px solid blue; */
+    font-size: small;
 }
 
 
@@ -11,12 +12,23 @@ button {
 
 #uvi-cont {
     background-color: red;
-    max-width: 100px;
+    max-width: 48px;
     color: white;
-    font-weight:bolder;
+    font-weight:bold;
     border-radius: 5px;
     border: 1px solid black;
     margin-left: 10px;
     font-size: 14px;
     padding: 2px;
+    text-align: center;
+}
+
+#city-name-date,
+#date0,
+#date1,
+#date2,
+#date3,
+#date4 {
+    font-size: large;
+    font-weight: bold;
 }

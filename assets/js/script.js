@@ -56,7 +56,7 @@ function constructPage() {
     $('header').addClass('text-center bg-dark text-light');
     var container = $('.container').addClass('d-flex');
     //left container
-    var leftContainerCol = $('<div>').addClass('parameters col bg-light').attr('id', 'left-cont');
+    var leftContainerCol = $('<div>').addClass('parameters col bg-secondary bg-opacity-10').attr('id', 'left-cont');
     //right container
     var rightContainerCol = $('<div>').addClass('results col-9').attr('id', 'right-cont');
     //top left container
@@ -69,7 +69,7 @@ function constructPage() {
     var cities;
     var listOfCitiesContainer = $('<div>').addClass('row border border-secondary rounded city-info').attr('id', 'city-info-cont');
     for (let i = 0; i < 8; i++) {
-        cities = $('<div>').addClass('row w-100 p-3 border border-secondary rounded').attr('id', 'city' + i);
+        cities = $('<div>').addClass('row w-100 m-0 p-2 border border-secondary').attr('id', 'city' + i);
         listOfCitiesContainer.append(cities);
     }
     //top right container
@@ -93,9 +93,9 @@ function constructPage() {
     var forecastIDs = ['date', 'icon', 'temp', 'humid'];
     var dayContainer;
     for (let i = 0; i < forecastDays; i++) {
-        dayContainer = $('<div>').addClass('col bg-primary m-2 rounded forecast-blocks').attr('id', 'day-cont' + i);
+        dayContainer = $('<div>').addClass('col bg-primary m-1 rounded forecast-blocks').attr('id', 'day-cont' + i);
         for (let j = 0; j < forecastIDs.length; j++) {
-            var info = $('<div>').addClass('row w-100 m-1 text-light forecast').attr('id', (forecastIDs[j] + i));
+            var info = $('<div>').addClass('row m-1 m-a text-light align-items-center forecast').attr('id', (forecastIDs[j] + i));
             dayContainer.append(info);
         }
         forecastBot.append(dayContainer);
@@ -109,13 +109,13 @@ function constructPage() {
             listOfCitiesContainer),
         rightContainerCol.append(
             selectedCityContainer.append(
-                $('<br>'),$('<br>'),$('<br>'),$('<br>'),$('<br>'),$('<br>'),$('<br>')),
+                $('<br>'),$('<br>'),$('<br>'),$('<br>')),
             forecastContainer.append(
                 forecastTop.append(
                     forecastTopTitle), forecastBot)));
 
 //Handle adding the icons
-                    $('#search-button').append($('<img id="search-button-icon" src="https://cdn.onlinewebfonts.com/svg/img_194915.png" height="32" width="32"/>'));
+                    $('#search-button').append($('<img id="search-button-icon" src="https://vectorified.com/images/white-search-icon-png-33.png" height="16" width="16"/>'));
                     $('#city-name-date::after').append($('<img id="city-name-date-icon src="./assets/images/image1.jpg" height="32" width="32"/>'));
                     $('#icon0').append($('<img id="icon-img0" src="./assets/images/image1.jpg" height="32" width="32"/>'));
                     $('#icon1').append($('<img id="icon-img1" src="./assets/images/image1.jpg" height="32" width="32"/>'));
@@ -176,24 +176,24 @@ function getForecast(URL) {
             $('#city-uv').append($('<div>').attr('id', 'uvi-cont').text(data.daily['0'].uvi));
             $('#date0').text(moment.unix(data.daily['1'].dt).format('M/DD/YYYY'));
             $('#icon-img0').attr('src', 'http://openweathermap.org/img/wn/' + data.daily['1'].weather['0'].icon + '@2x.png');
-            $('#temp0').text('Temp: ' + data.daily['1'].temp.day);
-            $('#humid0').text('Humidity: ' + data.daily['1'].humidity);
+            $('#temp0').text('Temp: ' + data.daily['1'].temp.day + '°F');
+            $('#humid0').text('Humidity: ' + data.daily['1'].humidity + '%');
             $('#date1').text(moment.unix(data.daily['2'].dt).format('M/DD/YYYY'));
             $('#icon-img1').attr('src', 'http://openweathermap.org/img/wn/' + data.daily['2'].weather['0'].icon + '@2x.png');
-            $('#temp1').text('Temp: ' + data.daily['2'].temp.day);
-            $('#humid1').text('Humidity: ' + data.daily['2'].humidity);
+            $('#temp1').text('Temp: ' + data.daily['2'].temp.day + '°F');
+            $('#humid1').text('Humidity: ' + data.daily['2'].humidity + '%');
             $('#date2').text(moment.unix(data.daily['3'].dt).format('M/DD/YYYY'));
             $('#icon-img2').attr('src', 'http://openweathermap.org/img/wn/' + data.daily['3'].weather['0'].icon + '@2x.png');
-            $('#temp2').text('Temp: ' + data.daily['3'].temp.day);
-            $('#humid2').text('Humidity: ' + data.daily['3'].humidity);
+            $('#temp2').text('Temp: ' + data.daily['3'].temp.day + '°F');
+            $('#humid2').text('Humidity: ' + data.daily['3'].humidity + '%');
             $('#date3').text(moment.unix(data.daily['4'].dt).format('M/DD/YYYY'));
             $('#icon-img3').attr('src', 'http://openweathermap.org/img/wn/' + data.daily['4'].weather['0'].icon + '@2x.png');
-            $('#temp3').text('Temp: ' + data.daily['4'].temp.day);
-            $('#humid3').text('Humidity: ' + data.daily['4'].humidity);
+            $('#temp3').text('Temp: ' + data.daily['4'].temp.day + '°F');
+            $('#humid3').text('Humidity: ' + data.daily['4'].humidity + '%');
             $('#date4').text(moment.unix(data.daily['5'].dt).format('M/DD/YYYY'));
             $('#icon-img4').attr('src', 'http://openweathermap.org/img/wn/' + data.daily['5'].weather['0'].icon + '@2x.png');
-            $('#temp4').text('Temp: ' + data.daily['5'].temp.day);
-            $('#humid4').text('Humidity: ' + data.daily['5'].humidity);
+            $('#temp4').text('Temp: ' + data.daily['5'].temp.day + '°F');
+            $('#humid4').text('Humidity: ' + data.daily['5'].humidity + '%');
 
         });
 }
