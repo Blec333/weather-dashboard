@@ -58,18 +58,18 @@ function constructPage() {
     //left container
     var leftContainerCol = $('<div>').addClass('parameters col bg-secondary bg-opacity-10').attr('id', 'left-cont');
     //right container
-    var rightContainerCol = $('<div>').addClass('results col-9').attr('id', 'right-cont');
+    var rightContainerCol = $('<div>').addClass('results col-8 m-3').attr('id', 'right-cont');
     //top left container
     var citySearchCont = $('<div>').addClass('row').attr('id', 'search-cont');
     var citySearchHeader = $('<h2>').addClass('row w-100 m-1').attr('id', 'search-header').text('Search for a City:');
     var cityTextBtnCont = $('<div>').addClass('row w-100 m-1').attr('id', 'search-text-btn-cont');
     var citySearchInput = $('<input>').addClass('col border border-secondary rounded').attr('id', 'search-input').val('San Diego');
-    var citySearchButton = $('<button>').addClass('col-2 m-1 p-0 bg-primary border border-secondary rounded').attr('id', 'search-button');
+    var citySearchButton = $('<button>').addClass('col-2 m-2 pt-2 pb-2 bg-primary border border-3 border-info rounded').attr('id', 'search-button');
 
     var cities;
     var listOfCitiesContainer = $('<div>').addClass('row border border-secondary rounded city-info').attr('id', 'city-info-cont');
     for (let i = 0; i < 8; i++) {
-        cities = $('<div>').addClass('row w-100 m-0 p-2 border border-secondary').attr('id', 'city' + i);
+        cities = $('<div>').addClass('row w-100 m-0 p-2 border border-light').attr('id', 'city' + i);
         listOfCitiesContainer.append(cities);
     }
     //top right container
@@ -95,7 +95,7 @@ function constructPage() {
     for (let i = 0; i < forecastDays; i++) {
         dayContainer = $('<div>').addClass('col bg-primary m-1 rounded forecast-blocks').attr('id', 'day-cont' + i);
         for (let j = 0; j < forecastIDs.length; j++) {
-            var info = $('<div>').addClass('row m-1 m-a text-light align-items-center forecast').attr('id', (forecastIDs[j] + i));
+            var info = $('<div>').addClass(' m-1 text-light margin-left-0 margin-right-auto forecast').attr('id', (forecastIDs[j] + i));
             dayContainer.append(info);
         }
         forecastBot.append(dayContainer);
