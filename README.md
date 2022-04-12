@@ -1,10 +1,10 @@
-# Common text title
+# Weather Dashboard
 
-repo name
+weather-dashboard
 
 ## Description 
 
-This project is / does...
+This weather dashboard retrieves information from web databases using a server API then displays it for viewing.
 
 
 ## Table of Contents (Optional)
@@ -15,30 +15,31 @@ This project is / does...
 
 ## Installation
 
-No installation is required; simply visit: https://blec333.github.io/project/ to review my deployed site.
+No installation is required; simply visit: https://blec333.github.io/weather-dashboard/ to review my deployed site.
 
 
 ## Usage 
 
 To begin using this site after loading:
 
-Simply type in...
+Simply type in the city name that you would like to view.
 
-Click the buttons to...
+Click the button or press the enter key to begin the search.
 
-Your information will be saved...
+Your search history will be saved on your local storage.
 
 ## Final Product
 
 <img title="image" alt="Style Showcase Page Screenshot" src="./assets/images/image1.jpg">
+<img title="image" alt="Style Showcase Page Screenshot" src="./assets/images/Weather Dashboard.gif">
 
 
 
 Deployed Application
-https://blec333.github.io/project/
+https://blec333.github.io/weather-dashboard/
 
 Github Repository
-https://github.com/Blec333/project
+https://github.com/Blec333/weather-dashboard
 
 
 

@@ -117,7 +117,7 @@ function constructPage() {
                     forecastTopTitle), forecastBot)));
     //Handle adding the icons
     $('#search-button').append($('<img id="search-button-icon" src="https://vectorified.com/images/white-search-icon-png-33.png" height="16" width="16"/>'));
-    $('#city-name-date::after').append($('<img id="city-name-date-icon src="./assets/images/image1.jpg" height="32" width="32"/>'));
+    $('#city-name-date').append($('<img id="city-name-date-icon" src="./assets/images/image1.jpg" height="32" width="32"/>'));
     $('#icon0').append($('<img id="icon-img0" src="./assets/images/image1.jpg" height="32" width="32"/>'));
     $('#icon1').append($('<img id="icon-img1" src="./assets/images/image1.jpg" height="32" width="32"/>'));
     $('#icon2').append($('<img id="icon-img2" src="./assets/images/image1.jpg" height="32" width="32"/>'));
@@ -151,7 +151,8 @@ function getWeather(URL) {
             weatherInfo = data;
             parsedIcon = 'http://openweathermap.org/img/wn/' + data.weather['0'].icon + '@2x.png';
 
-            $('#city-name-date').text(cityName + ' (' + date + ') ');
+            $('#city-name-date-icon').attr('src', 'http://openweathermap.org/img/wn/' + data.weather['0'].icon + '@2x.png');
+            $('#city-name-date').text(cityName + ' (' + date + ')');
             $('#city-temp').text('Temperature: ' + data.main.temp);
             $('#city-humid').text('Humidity: ' + data.main.humidity);
             $('#city-wind').text('Wind Speed: ' + data.wind.speed + ' MPH');
